@@ -11,7 +11,7 @@ TOKEN = os.environ['TOKEN']
 PREFIX = '!'
 
 MonacoBot = commands.Bot(
-    command_prefix = PREFIX,
+    command_prefix = commands.when_mentioned_or(PREFIX),
     activity = discord.Game("Logging in")
     )
 
@@ -19,13 +19,14 @@ MonacoBot.remove_command("help")
 
 @MonacoBot.event
 async def on_ready():
-    game = discord.Game(f"For help type {PREFIX}help")
+    game = discord.Game(f"@Monaco Bot help or !help")
     await MonacoBot.change_presence(activity = game)
 
 @MonacoBot.command()
 async def help(ctx):
     message = (
         "```\n"
+        f"Use @Monaco Bot or {PREFIX} before a command.\n\n"
         f"{PREFIX}help            Shows this message.\n"
         f"{PREFIX}roulette        Picks a random thief.\n"
         f"{PREFIX}roulette blonde Picks a random thief including blonde.\n"
