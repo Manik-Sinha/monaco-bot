@@ -13,11 +13,11 @@ class MonacoBot(discord.Client):
         if before.activity != after.activity:
             if str(after.activity) == "Monaco":
                 role = discord.utils.get(after.guild.roles, name="Playing Monaco")
-                print(f"Adding role {role}")
+                #print(f"Adding role {role}")
                 await after.add_roles(role)
             elif str(before.activity) == "Monaco":
                 role = discord.utils.get(before.guild.roles, name="Playing Monaco")
-                print(f"Removing role {role}")
+                #print(f"Removing role {role}")
                 await after.remove_roles(role)
 
 client = MonacoBot()
