@@ -2,23 +2,60 @@
 #Copyright (C) 2018 Manik Sinha
 
 import os
+import random
 import discord
+from discord.ext import commands
 #import asyncio
 TOKEN = os.environ['TOKEN']
 
-class MonacoBot(discord.Client):
-    #Possible improvement:
-    #Add code to add role Playing Monaco if it doesn't exist.
-    async def on_member_update(self, before, after):
-        if before.activity != after.activity:
-            if str(after.activity) == "Monaco":
-                role = discord.utils.get(after.guild.roles, name="Playing Monaco")
-                #print(f"Adding role {role}")
-                await after.add_roles(role)
-            elif str(before.activity) == "Monaco":
-                role = discord.utils.get(before.guild.roles, name="Playing Monaco")
-                #print(f"Removing role {role}")
-                await after.remove_roles(role)
+THIEVES = (
+    'Lookout',
+    'Locksmith',
+    'Pickpocket',
+    'Cleaner',
+    'Gentleman',
+    'Redhead',
+    'Hacker',
+    'Mole')
 
-client = MonacoBot()
-client.run(TOKEN)
+MonacoBot = commands.Bot(
+    command_prefix = '!',
+    activity = discord.Game("Logging in")
+    )
+
+MonacoBot.remove_command("help")
+
+@MonacoBot.event
+async def on_ready():
+    await MonacoBot.change_presence(activity = discord.Game("@Monaco Bot help"))
+
+@MonacoBot.command()
+async def help(ctx):
+    message = (
+        "```\n"
+        "!help            Shows this message.\n"
+        "!roulette        Picks a random thief.\n"
+        "!roulette blonde Picks a random thief including blonde.\n"
+        "```\n")
+    await ctx.send(message)
+
+@MonacoBot.command()
+async def roulette(ctx, blonde = ""):
+    """Pick a random thief (use !roulette blonde to include blonde)"""
+    thieves = THIEVES
+    if blonde.lower() == "blonde":
+        thieves = thieves + ("Blonde",)
+    random_thief = random.choice(thieves)
+    await ctx.send(f":{random_thief}: {random_thief}")
+
+@MonacoBot.event
+async def on_member_update(before, after):
+    if before.activity != after.activity:
+        if str(after.activity) == "Monaco":
+            role = discord.utils.get(after.guild.roles, name="Playing Monaco")
+            await after.add_roles(role)
+        elif str(before.activity) == "Monaco":
+            role = discord.utils.get(before.guild.roles, name="Playing Monaco")
+            await after.remove_roles(role)
+
+MonacoBot.run(TOKEN)
