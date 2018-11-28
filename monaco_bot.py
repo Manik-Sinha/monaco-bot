@@ -8,8 +8,10 @@ from discord.ext import commands
 #import asyncio
 TOKEN = os.environ['TOKEN']
 
+PREFIX = '!'
+
 MonacoBot = commands.Bot(
-    command_prefix = '!',
+    command_prefix = PREFIX,
     activity = discord.Game("Logging in")
     )
 
@@ -17,15 +19,16 @@ MonacoBot.remove_command("help")
 
 @MonacoBot.event
 async def on_ready():
-    await MonacoBot.change_presence(activity = discord.Game("For help type !help"))
+    game = discord.Game(f"For help type {PREFIX}help")
+    await MonacoBot.change_presence(activity = game)
 
 @MonacoBot.command()
 async def help(ctx):
     message = (
         "```\n"
-        "!help            Shows this message.\n"
-        "!roulette        Picks a random thief.\n"
-        "!roulette blonde Picks a random thief including blonde.\n"
+        f"{PREFIX}help            Shows this message.\n"
+        f"{PREFIX}roulette        Picks a random thief.\n"
+        f"{PREFIX}roulette blonde Picks a random thief including blonde.\n"
         "```\n")
     await ctx.send(message)
 
