@@ -27,9 +27,16 @@ async def help(ctx):
     message = (
         "```\n"
         f"Use @Monaco Bot or {PREFIX} before a command.\n\n"
-        f"{PREFIX}help            Shows this message.\n"
-        f"{PREFIX}roulette        Picks a random thief.\n"
-        f"{PREFIX}roulette blonde Picks a random thief including blonde.\n"
+        f"{PREFIX}help            Shows this message.\n\n"
+        #f"{PREFIX}help command    Shows help about a specific command.\n"
+        f"{PREFIX}roulette        Picks a random thief.\n\n"
+        f"{PREFIX}roulette blonde Picks a random thief including blonde.\n\n"
+        f"{PREFIX}map             Picks a random map.\n\n"
+        f"{PREFIX}map N           Picks a random map and N playable characters.\n"
+        "                 N can be: 0, 1, 2, 3, or 4\n\n"
+        f"{PREFIX}map N CAMPAIGN  Picks a random map from CAMPAIGN and N playable characters.\n"
+        "                 CAMPAIGN can be:\n"
+        "                 locksmith, pickpocket, origins, fin, pvp, or all\n"
         "```\n")
     await ctx.send(message)
 
