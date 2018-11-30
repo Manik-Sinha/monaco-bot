@@ -23,21 +23,42 @@ async def on_ready():
     await MonacoBot.change_presence(activity = game)
 
 @MonacoBot.command()
-async def help(ctx):
-    message = (
-        "```\n"
-        f"Use @Monaco Bot or {PREFIX} before a command.\n\n"
-        f"{PREFIX}help            Shows this message.\n\n"
-        #f"{PREFIX}help command    Shows help about a specific command.\n"
-        f"{PREFIX}roulette        Picks a random thief.\n\n"
-        f"{PREFIX}roulette blonde Picks a random thief including blonde.\n\n"
-        f"{PREFIX}map             Picks a random map.\n\n"
-        f"{PREFIX}map N           Picks a random map and N playable characters.\n"
-        "                 N can be: 0, 1, 2, 3, or 4\n\n"
-        f"{PREFIX}map N CAMPAIGN  Picks a random map from CAMPAIGN and N playable characters.\n"
-        "                 CAMPAIGN can be:\n"
-        "                 locksmith, pickpocket, origins, fin, pvp, or all\n"
-        "```\n")
+async def help(ctx, message_type=""):
+    if message_type != "short":
+        message = (
+            f"**Use @Monaco Bot or {PREFIX} before a command.**\n\n"
+            f"**{PREFIX}help**\n"
+            "```Shows this message.```\n"
+            f"**{PREFIX}help short**\n"
+            "```Shows a shorter help message.```\n"
+            f"**{PREFIX}roulette**\n"
+            "```Picks a random thief.```\n"
+            f"**{PREFIX}roulette blonde**\n"
+            "```Picks a random thief including blonde.```\n"
+            f"**{PREFIX}map**\n"
+            "```Picks a random map.```\n"
+            f"**{PREFIX}map N**\n"
+            "```Picks a random map and N playable characters.\n"
+            "N can be: 0, 1, 2, 3, or 4```\n"
+            f"**{PREFIX}map N CAMPAIGN**\n"
+            "```Picks a random map from CAMPAIGN and N playable characters.\n"
+            "CAMPAIGN can be: locksmith, pickpocket, origins, fin, pvp, or all```")
+    else:
+        message = (
+            "```\n"
+            f"Use @Monaco Bot or {PREFIX} before a command.\n\n"
+            f"{PREFIX}help            Shows a longer help message\n\n"
+            f"{PREFIX}help short      Shows this message.\n\n"
+            #f"{PREFIX}help command    Shows help about a specific command.\n"
+            f"{PREFIX}roulette        Picks a random thief.\n\n"
+            f"{PREFIX}roulette blonde Picks a random thief including blonde.\n\n"
+            f"{PREFIX}map             Picks a random map.\n\n"
+            f"{PREFIX}map N           Picks a random map and N playable characters.\n"
+            "                 N can be: 0, 1, 2, 3, or 4\n\n"
+            f"{PREFIX}map N CAMPAIGN  Picks a random map from CAMPAIGN and N playable characters.\n"
+            "                 CAMPAIGN can be:\n"
+            "                 locksmith, pickpocket, origins, fin, pvp, or all\n"
+            "```\n")
     await ctx.send(message)
 
 @MonacoBot.command()
