@@ -28,22 +28,22 @@ async def help(ctx, message_type=""):
         message = (
             "```\n"
             f"Use @Monaco Bot or {PREFIX} before a command.\n\n"
-            f"{PREFIX}help            Shows this message.\n\n"
-            f"{PREFIX}help mobile     Shows a help message better formatted for mobile.\n\n"
+            f"{PREFIX}help             Shows this message.\n\n"
+            f"{PREFIX}help mobile      Shows a help message better formatted for mobile.\n\n"
             #f"{PREFIX}help command    Shows help about a specific command.\n"
-            f"{PREFIX}roulette        Picks a random thief.\n\n"
-            f"{PREFIX}roulette blonde Picks a random thief including blonde.\n\n"
-            f"{PREFIX}map             Picks a random map.\n\n"
-            f"{PREFIX}map N           Picks a random map and N playable characters.\n"
-            "                 N can be: 0, 1, 2, 3, or 4\n\n"
-            f"{PREFIX}map N CAMPAIGN  Picks a random map from CAMPAIGN and N playable characters.\n"
-            "                 CAMPAIGN can be:\n"
-            "                 locksmith, pickpocket, origins, fin, pvp, or all\n\n"
-            f"{PREFIX}list            Lists 8 unique characters in random order.\n\n"
-            f"{PREFIX}list N          Lists N unique characters in random order.\n"
-            "                 N can be: 1, 2, 3, 4, 5, 6, 7, or 8\n\n"
-            f"{PREFIX}list N blonde   Lists N unique characters including the blonde in random order.\n"
-            "                 N can be: 1, 2, 3, 4, 5, 6, 7, 8, or 9"
+            f"{PREFIX}thief            Picks a random thief.\n\n"
+            f"{PREFIX}thief blonde     Picks a random thief including blonde.\n\n"
+            f"{PREFIX}thieves          Picks 8 unique thieves in random order.\n\n"
+            f"{PREFIX}thieves N        Picks N unique thieves in random order.\n"
+            "                  N can be: 1, 2, 3, 4, 5, 6, 7, or 8\n\n"
+            f"{PREFIX}thieves N blonde Picks N unique thieves including the blonde in random order.\n"
+            "                  N can be: 1, 2, 3, 4, 5, 6, 7, 8, or 9\n\n"
+            f"{PREFIX}map              Picks a random map.\n\n"
+            f"{PREFIX}map N            Picks a random map and N playable characters.\n"
+            "                  N can be: 0, 1, 2, 3, or 4\n\n"
+            f"{PREFIX}map N CAMPAIGN   Picks a random map from CAMPAIGN and N playable characters.\n"
+            "                  CAMPAIGN can be:\n"
+            "                  locksmith, pickpocket, origins, fin, pvp, or all\n\n"
             "```")
     else:
         message = (
@@ -52,10 +52,18 @@ async def help(ctx, message_type=""):
             "```Shows this message.```\n"
             f"**{PREFIX}help mobile**\n"
             "```Shows a help message better formatted for mobile.```\n"
-            f"**{PREFIX}roulette**\n"
+            f"**{PREFIX}thief**\n"
             "```Picks a random thief.```\n"
-            f"**{PREFIX}roulette blonde**\n"
+            f"**{PREFIX}thief blonde**\n"
             "```Picks a random thief including blonde.```\n"
+            f"**{PREFIX}thieves**\n"
+            "```Picks 8 unique thieves in random order.```\n"
+            f"**{PREFIX}thieves N**\n"
+            "```Picks N unique thieves in random order.\n"
+            "N can be: 1, 2, 3, 4, 5, 6, 7, or 8```\n"
+            f"**{PREFIX}thieves N blonde**\n"
+            "```Picks N unique thieves including the blonde in random order.\n"
+            "N can be: 1, 2, 3, 4, 5, 6, 7, 8, or 9```\n"
             f"**{PREFIX}map**\n"
             "```Picks a random map.```\n"
             f"**{PREFIX}map N**\n"
@@ -63,20 +71,12 @@ async def help(ctx, message_type=""):
             "N can be: 0, 1, 2, 3, or 4```\n"
             f"**{PREFIX}map N CAMPAIGN**\n"
             "```Picks a random map from CAMPAIGN and N playable characters.\n"
-            "CAMPAIGN can be: locksmith, pickpocket, origins, fin, pvp, or all```\n"
-            f"**{PREFIX}list**\n"
-            "```Lists 8 unique characters in random order.```\n"
-            f"**{PREFIX}list N**\n"
-            "```Lists N unique characters in random order.\n"
-            "N can be: 1, 2, 3, 4, 5, 6, 7, or 8```\n"
-            f"**{PREFIX}list N blonde**\n"
-            "```Lists N unique characters including the blonde in random order.\n"
-            "N can be: 1, 2, 3, 4, 5, 6, 7, 8, or 9```\n")
+            "CAMPAIGN can be: locksmith, pickpocket, origins, fin, pvp, or all```\n")
     await ctx.send(message)
 
-@MonacoBot.command()
+@MonacoBot.command(name='thief')
 async def roulette(ctx, blonde = ""):
-    """Pick a random thief (use !roulette blonde to include blonde)"""
+    """Pick a random thief (use !thief blonde to include blonde)"""
     thieves = (
         'Lookout',
         'Locksmith',
@@ -91,6 +91,31 @@ async def roulette(ctx, blonde = ""):
     thief = random.choice(thieves)
     emoji = await commands.EmojiConverter().convert(ctx, thief)
     await ctx.send(f"{emoji} {thief}")
+
+@MonacoBot.command(name='thieves')
+async def list_random_chars(ctx, count = 8, blonde = ""):
+    count = max(1, min(count, 9))
+    characters = (
+        'Lookout',
+        'Locksmith',
+        'Pickpocket',
+        'Cleaner',
+        'Gentleman',
+        'Redhead',
+        'Hacker',
+        'Mole')
+    if blonde.lower() == "blonde":
+        characters = characters + ("Blonde",)
+    else:
+        if count == 9:
+            count = 8
+    thieves = random.sample(characters, count)
+    get_emojis = commands.EmojiConverter().convert
+    emojis = [await get_emojis(ctx, thief) for thief in thieves]
+    message = ""
+    for emoji, thief in zip(emojis, thieves):
+        message += f"{emoji} {thief}\n"
+    await ctx.send(message)
 
 @MonacoBot.command(name='map')
 async def random_level(ctx, players = 0, campaign = "all"):
@@ -231,31 +256,6 @@ async def random_level(ctx, players = 0, campaign = "all"):
     message = "**" + str(level) + "**"
     for i in range(len(thieves)):
         message += "\n" + str(emojis[i]) + " " + str(thieves[i])
-    await ctx.send(message)
-
-@MonacoBot.command(name='list')
-async def list_random_chars(ctx, count = 8, blonde = ""):
-    count = max(1, min(count, 9))
-    characters = (
-        'Lookout',
-        'Locksmith',
-        'Pickpocket',
-        'Cleaner',
-        'Gentleman',
-        'Redhead',
-        'Hacker',
-        'Mole')
-    if blonde.lower() == "blonde":
-        characters = characters + ("Blonde",)
-    else:
-        if count == 9:
-            count = 8
-    thieves = random.sample(characters, count)
-    get_emojis = commands.EmojiConverter().convert
-    emojis = [await get_emojis(ctx, thief) for thief in thieves]
-    message = ""
-    for emoji, thief in zip(emojis, thieves):
-        message += f"{emoji} {thief}\n"
     await ctx.send(message)
 
 @MonacoBot.event
