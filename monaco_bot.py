@@ -35,23 +35,23 @@ async def help(ctx, message_type=""):
             f"{PREFIX}thief blonde     Picks a random thief including blonde.\n\n"
             f"{PREFIX}thieves          Picks 8 unique thieves in random order.\n\n"
             f"{PREFIX}thieves N        Picks N unique thieves in random order.\n"
-            "                  N can be: 1, 2, 3, 4, 5, 6, 7, or 8\n\n"
+            "                  N can be: 1, 2, 3, 4, 5, 6, 7, or 8.\n\n"
             f"{PREFIX}thieves N blonde Picks N unique thieves including the blonde in random order.\n"
-            "                  N can be: 1, 2, 3, 4, 5, 6, 7, 8, or 9\n\n"
+            "                  N can be: 1, 2, 3, 4, 5, 6, 7, 8, or 9.\n\n"
             f"{PREFIX}map              Picks a random map.\n\n"
             f"{PREFIX}map N            Picks a random map and N playable characters.\n"
-            "                  N can be: 0, 1, 2, 3, or 4\n\n"
+            "                  N can be: 0, 1, 2, 3, 4, 5, 6, 7, or 8.\n\n"
             f"{PREFIX}map N CAMPAIGN   Picks a random map from CAMPAIGN and N playable characters.\n"
             "                  CAMPAIGN can be:\n"
-            "                  locksmith, pickpocket, origins, fin, pvp, or all\n\n"
+            "                  locksmith, pickpocket, origins, fin, pvp, or all.\n\n"
             "```")
     else:
         message = (
             f"**Use @Monaco Bot or {PREFIX} before a command.**\n\n"
             f"**{PREFIX}help**\n"
-            "```Shows this message.```\n"
+            "```Shows a help message better formatted for desktop or web.```\n"
             f"**{PREFIX}help mobile**\n"
-            "```Shows a help message better formatted for mobile.```\n"
+            "```Shows this message.```\n"
             f"**{PREFIX}thief**\n"
             "```Picks a random thief.```\n"
             f"**{PREFIX}thief blonde**\n"
@@ -60,18 +60,18 @@ async def help(ctx, message_type=""):
             "```Picks 8 unique thieves in random order.```\n"
             f"**{PREFIX}thieves N**\n"
             "```Picks N unique thieves in random order.\n"
-            "N can be: 1, 2, 3, 4, 5, 6, 7, or 8```\n"
+            "N can be: 1, 2, 3, 4, 5, 6, 7, or 8.```\n"
             f"**{PREFIX}thieves N blonde**\n"
             "```Picks N unique thieves including the blonde in random order.\n"
-            "N can be: 1, 2, 3, 4, 5, 6, 7, 8, or 9```\n"
+            "N can be: 1, 2, 3, 4, 5, 6, 7, 8, or 9.```\n"
             f"**{PREFIX}map**\n"
             "```Picks a random map.```\n"
             f"**{PREFIX}map N**\n"
             "```Picks a random map and N playable characters.\n"
-            "N can be: 0, 1, 2, 3, or 4```\n"
+            "N can be: 0, 1, 2, 3, 4, 5, 6, 7, or 8.```\n"
             f"**{PREFIX}map N CAMPAIGN**\n"
             "```Picks a random map from CAMPAIGN and N playable characters.\n"
-            "CAMPAIGN can be: locksmith, pickpocket, origins, fin, pvp, or all```\n")
+            "CAMPAIGN can be: locksmith, pickpocket, origins, fin, pvp, or all.```\n")
     await ctx.send(message)
 
 @MonacoBot.command(name='thief')
@@ -120,8 +120,8 @@ async def list_random_chars(ctx, count = 8, blonde = ""):
 @MonacoBot.command(name='map')
 async def random_level(ctx, players = 0, campaign = "all"):
     """Pick a random level."""
-    #Limit players to range 0, 4.
-    players = max(0, min(players, 4))
+    #Limit players to range 0, 8.
+    players = max(0, min(players, 8))
     allchars = ("Redhead", "Hacker", "Gentleman", "Mole", "Locksmith", "Lookout", "Pickpocket", "Cleaner")
     levels_dict = {
         "The Prison Break":("Locksmith", "Lookout", "Pickpocket", "Cleaner"),
@@ -250,6 +250,7 @@ async def random_level(ctx, players = 0, campaign = "all"):
             "Dark and Stormy")
         level = random.choice(pvp_levels)
 
+    players = min(players, len(levels_dict[level]))
     thieves = random.sample(levels_dict[level], players)
     get_emojis = commands.EmojiConverter().convert
     emojis = [await get_emojis(ctx, thief) for thief in thieves]
