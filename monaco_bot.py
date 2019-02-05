@@ -262,10 +262,18 @@ async def random_level(ctx, players = 0, campaign = "all"):
 @MonacoBot.event
 async def on_member_update(before, after):
     if before.activity != after.activity:
-        if str(after.activity) == "Monaco":
+
+        #if str(after.activity) == "Monaco":
+        #    role = discord.utils.get(after.guild.roles, name="Playing Monaco")
+        #    await after.add_roles(role)
+        #elif str(before.activity) == "Monaco":
+        #    role = discord.utils.get(before.guild.roles, name="Playing Monaco")
+        #    await after.remove_roles(role)
+
+        if after.activity is not None and after.activity.name == "Monaco":
             role = discord.utils.get(after.guild.roles, name="Playing Monaco")
             await after.add_roles(role)
-        elif str(before.activity) == "Monaco":
+        elif before.activity is not None and before.activity.name == "Monaco":
             role = discord.utils.get(before.guild.roles, name="Playing Monaco")
             await after.remove_roles(role)
 
