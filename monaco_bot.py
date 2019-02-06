@@ -278,12 +278,23 @@ async def on_member_update(before, after):
 
         #Attempt to account for someone streaming Monaco or multiple activities.
         for activity in before.activities:
-            if activity.name == "Monaco":
-                role = discord.utils.get(before.guild.roles, name="Playing Monaco")
-                await after.remove_roles(role)
+            if activity.type == discord.ActivityType.playing:
+                if activity.name == "Monaco":
+                    role = discord.utils.get(before.guild.roles, name="Playing Monaco")
+                    await after.remove_roles(role)
+            elif activity.type == discord.ActivityType.streaming:
+                if activity.details == "Monaco":
+                    role = discord.utils.get(before.guild.roles, name="Playing Monaco")
+                    await after.remove_roles(role)
+
         for activity in after.activities:
-            if activity.name == "Monaco":
-                role = discord.utils.get(after.guild.roles, name="Playing Monaco")
-                await after.add_roles(role)
+            if activity.type == discord.ActivityType.playing:
+                if activity.name == "Monaco":
+                    role = discord.utils.get(after.guild.roles, name="Playing Monaco")
+                    await after.add_roles(role)
+            elif activity.type == discord.ActivityType.streaming:
+                if activity.details == "Monaco":
+                    role = discord.utils.get(before.guild.roles, name="Playing Monaco")
+                    await after.remove_roles(role)
 
 MonacoBot.run(TOKEN)
