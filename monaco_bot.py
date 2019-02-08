@@ -22,7 +22,7 @@ async def on_ready():
     game = discord.Game(f"@Monaco Bot help or !help")
     await MonacoBot.change_presence(activity = game)
 
-@MonacoBot.command()
+@MonacoBot.command(aliases=['h'])
 async def help(ctx, message_type=""):
     if message_type != "mobile":
         message = (
@@ -30,6 +30,7 @@ async def help(ctx, message_type=""):
             f"Use @Monaco Bot or {PREFIX} before a command.\n\n"
             f"{PREFIX}help             Shows this message.\n\n"
             f"{PREFIX}help mobile      Shows a help message better formatted for mobile.\n\n"
+            f"{PREFIX}shortcuts        Displays command shortcuts.\n\n"
             #f"{PREFIX}help command    Shows help about a specific command.\n"
             f"{PREFIX}thief            Picks a random thief.\n\n"
             f"{PREFIX}thief blonde     Picks a random thief including blonde.\n\n"
@@ -52,6 +53,8 @@ async def help(ctx, message_type=""):
             "```Shows a help message better formatted for desktop or web.```\n"
             f"**{PREFIX}help mobile**\n"
             "```Shows this message.```\n"
+            f"**{PREFIX}shortcuts**\n"
+            "```Displays command shortcuts.```\n"
             f"**{PREFIX}thief**\n"
             "```Picks a random thief.```\n"
             f"**{PREFIX}thief blonde**\n"
@@ -74,7 +77,20 @@ async def help(ctx, message_type=""):
             "CAMPAIGN can be: locksmith, pickpocket, origins, fin, pvp, or all.```\n")
     await ctx.send(message)
 
-@MonacoBot.command(name='thief')
+@MonacoBot.command(aliases=['s'])
+async def shortcuts(ctx, message_type=""):
+    message = (
+        "```\n"
+        "Shortcuts\n\n"
+        f"{PREFIX}h  {PREFIX}help\n"
+        f"{PREFIX}t  {PREFIX}thief\n"
+        f"{PREFIX}th {PREFIX}thieves\n"
+        f"{PREFIX}m  {PREFIX}map\n"
+        f"{PREFIX}s  {PREFIX}shortcuts\n"
+        "```\n")
+    await ctx.send(message)
+
+@MonacoBot.command(name='thief', aliases=['t'])
 async def roulette(ctx, blonde = ""):
     """Pick a random thief (use !thief blonde to include blonde)"""
     thieves = (
@@ -92,7 +108,7 @@ async def roulette(ctx, blonde = ""):
     emoji = await commands.EmojiConverter().convert(ctx, thief)
     await ctx.send(f"{emoji} {thief}")
 
-@MonacoBot.command(name='thieves')
+@MonacoBot.command(name='thieves', aliases=['th'])
 async def list_random_chars(ctx, count = 8, blonde = ""):
     count = max(1, min(count, 9))
     characters = (
@@ -117,7 +133,7 @@ async def list_random_chars(ctx, count = 8, blonde = ""):
         message += f"{emoji} {thief}\n"
     await ctx.send(message)
 
-@MonacoBot.command(name='map')
+@MonacoBot.command(name='map', aliases=['m'])
 async def random_level(ctx, players = 0, campaign = "all"):
     """Pick a random level."""
     #Limit players to range 0, 8.
