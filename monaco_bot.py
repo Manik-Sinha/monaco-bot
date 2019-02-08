@@ -283,7 +283,7 @@ async def on_member_update(before, after):
                     role = discord.utils.get(before.guild.roles, name="Playing Monaco")
                     await after.remove_roles(role)
             elif activity.type == discord.ActivityType.streaming:
-                if activity.details == "Monaco":
+                if "monaco" in activity.name.lower() or "monaco" in activity.details.lower():
                     role = discord.utils.get(before.guild.roles, name="Playing Monaco")
                     await after.remove_roles(role)
 
@@ -293,7 +293,7 @@ async def on_member_update(before, after):
                     role = discord.utils.get(after.guild.roles, name="Playing Monaco")
                     await after.add_roles(role)
             elif activity.type == discord.ActivityType.streaming:
-                if activity.details == "Monaco":
+                if "monaco" in activity.name.lower() or "monaco" in activity.details.lower():
                     role = discord.utils.get(before.guild.roles, name="Playing Monaco")
                     await after.remove_roles(role)
 
